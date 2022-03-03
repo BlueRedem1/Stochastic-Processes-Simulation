@@ -30,10 +30,10 @@ Primero hacemos click aquí: [Descargar R](http://www.r-project.org/)
 
 # Instalar Git
 
-[Instrucciones aquí](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+[Instrucciones click aquí](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 # Configurar Github
-[Instrucciones aquí](https://docs.github.com/es/get-started/quickstart/set-up-git)
+[Instrucciones click aquí](https://docs.github.com/es/get-started/quickstart/set-up-git)
 
 # Clonar repositorio de la clase
 
