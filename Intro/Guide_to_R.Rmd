@@ -46,7 +46,7 @@ Primero hacemos click aquí: [Descargar R](http://www.r-project.org/)
 `https://github.com/BlueRedem1/Stochastic-Processes-Simulation.git`
 
 6. Escogemos un nombre y carpeta para el repositorio
-7. Para actualizar nos vamos a la pestaña que dice `Git`, y le damos en la flechita azul que apunta hacia abajp
+7. Para actualizar nos vamos a la pestaña que dice `Git`, y le damos en la flechita azul que apunta hacia abajo.
 
 # Básicos de R
 
