@@ -97,7 +97,6 @@ Nos vamos a `Session -> Set Working Directory -> Choose directory`
 setwd("/Users/cesarjuliocuellarruiz/Desktop")
 ```
 
-···
 ## Variables
 
 ### Asignación
