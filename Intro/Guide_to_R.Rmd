@@ -220,7 +220,8 @@ Para especificar la librería usamos el nombre esta, seguida de dos puntos, dos 
 Podemos leer un csv con la siguiente funcion:
 
 ```{r cargar archivos}
-# read.csv("Aquí va la dirección relativa del archivo respecto al path seteado en el directorio de trabajo")
+# read.csv("Aquí va la dirección relativa del archivo 
+#respecto al path seteado en el directorio de trabajo")
 ```
 Por ejemplo, si tengo un archivo `ejemplo1.csv` en una la misma carpeta que tengo en el working directorio, bastaría con escribir `read.csv("ejemplo1.csv")`, si se encuentra en una carpeta distinta, tendría que escribir el path completo.
 
@@ -229,7 +230,8 @@ Por ejemplo, si tengo un archivo `ejemplo1.csv` en una la misma carpeta que teng
 Podemos escribir un csv con la siguiente función:
 
 ```{r escribir archivos}
-#write.csv(Aquí va el nombre del objeto que queremos escribir, como un dataframe)
+#write.csv(Aquí va el nombre del objeto que queremos 
+#escribir, como un dataframe)
 ```
 
 
@@ -334,7 +336,8 @@ x<-list(c(4,5,6,7,8,9),T,4.5,"hola")
 x
 x[1] #Nos muestra todo el contenido del primer elemento, no podemos trabajar bien con este tipo, tenemos que hacer un subsetting distinto
 x[1][1] #¿Ven? ¡Es Null 1!
-x[[1]] #Aquí nos muestra el objeto del primer elemento en su forma original, aquí ya podemos trabajar con dicho objeto
+x[[1]] #Aquí nos muestra el objeto del primer 
+#elemento en su forma original, aquí ya podemos trabajar con dicho objeto
 x[[1]][1] #¡Aquí sí pudimos!
 ```
 
