@@ -26,14 +26,14 @@ Primero hacemos click aquí: [Descargar R](http://www.r-project.org/)
 1. Primero hacemos click aquí: [Descargar R](http://www.rstudio.org/)
 2. Click en `Download RStudio Desktop`
 3. Click en `Recommended For Your System`
-4.- Descarga el archivo y córrelo, te guiarán durante la instalación
+4. Descarga el archivo y córrelo, te guiarán durante la instalación
 
 # Instalar Git
 
 [Instrucciones aquí](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
 # Configurar Github
-[Instrucciones aquí](https://docs.github.com/es/get-started/quickstart/set-up-git
+[Instrucciones aquí](https://docs.github.com/es/get-started/quickstart/set-up-git)
 
 # Clonar repositorio de la clase
 
@@ -41,11 +41,14 @@ Primero hacemos click aquí: [Descargar R](http://www.r-project.org/)
 2. Vamos a `File-New Project`
 3. Elegimos `Version Control`
 4. Elegimos `Git`
-5. En `Repository URL` pegamos el siguiente link `https://github.com/BlueRedem1/Stochastic-Processes-Simulation.git`
+5. En `Repository URL` pegamos el siguiente link:
+
+`https://github.com/BlueRedem1/Stochastic-Processes-Simulation.git`
+
 6. Escogemos un nombre y carpeta para el repositorio
 7. Para actualizar nos vamos a la pestaña que dice `Git`, y le damos en la flechita azul que apunta hacia abajp
 
-#Básicos de R
+# Básicos de R
 
 ## Operaciones básicas
 
@@ -185,12 +188,15 @@ library(tidyr)
 * `lmtest`: Probar los supuestos de modelos de regresión lineal
 * `imputeTS`: Para imputar datos daltantes en series de tiempo
 * `fGarch`: Para hacer modelos GARCH
+
 #### Archivos 
 * `readxl`: Para leer más rápido archivos de Excel
+
 #### Finanzas
 * `tidyquant`: Para hacer análisis financiero cuantitativo
 * `timeSeries`: Objetos de series de tiempo financieras
 * `QRM`: Herramientas con conceptos de administración de riesgos financieros
+
 #### Estéticos
 * `manipulate`: Con esta hacemos gráficos interactivos
 * `shiny`: Para hacer aplicaciones interactivas en `R`
@@ -465,6 +471,7 @@ Recordemos que en la paquetería `actuar` podemos encontrar otras distribuciones
 * `glm()` Para calcular un modelo de regresión lineal generalizado
 * `ks.test()` Para hacer la prueba Kolmogorov-Smirnov
 * `chisq.test()` Para hacer el test de la Ji-cuadrada
+
 #### Para graficar
 * `plot()` Nos grafica una función o conjunto de datos
 
