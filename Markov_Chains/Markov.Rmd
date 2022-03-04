@@ -15,6 +15,10 @@ Muchos procesos estocásticos son usados para modelar el comportamiento de activ
 
 En este pequeño `Rmarkdown` presentaremos una breve introducción a la simulación de estas famosas **Cadenas de Markov**, ¡Sí, como el perrito del cartel del curso!
 
+
+![¡Markov!](Markov_dog.png)
+
+
 Haremos énfasis en las cadenas con estados y tiempos discretos, que son los que hemos estado viendo en clase.
 
 # ¿Por qué es de utilidad la simulación?
@@ -23,7 +27,7 @@ Ayuda a aterrizar los conceptos teóricos en algo práctico, además de que nos 
 
 # Pequeño recordatorio
 
-Sea \mathbb{S} un conjunto discreto el espacio de estados, y $\pi$ la distribución inicial de la cadena, así como $P_{ij}$ la probabilidad de ir del estado $i$ al $j$, con $i,j\in\mathbb{S}$.
+Sea $\mathbb{S}$ un conjunto discreto el espacio de estados, y $\pi$ la distribución inicial de la cadena, así como $P_{ij}$ la probabilidad de ir del estado $i$ al $j$, con $i,j\in\mathbb{S}$.
 
 Decimos que un proceso estocástico $\{X_{n}: n\in\mathbb{N}\}$ es una cadena de Markov si cumple que $\forall n\geq0$ y estados $i,j\in\mathbb{S}$:
 
@@ -32,7 +36,7 @@ Recordemos que:
 
 $P_{ij}$ denota la probabilidad de que la cadena, **estando actualmente en tiempo n en el estado i**, se mueva en el siguiente paso ("unidad de tiempo"), al estado $j$. A esta probabilidad también se le conoce como **probabilidad de transición de un paso**
 
-Si unimos todas estas probabilidades para cada $i$ en un vector, y los acomodamos como renglones de una matriz, **obtenemos una matriz cuadrada** \mathbb{M}=$P_{ij}\forall i,j\in\mathbb{S}$. A esta matriz la llamamos **matriz de transición de un paso**, ya que cuando la cadena deja el estado $i$, debe moverse a algún estado $j\in\mathbb{S}$
+Si unimos todas estas probabilidades para cada $i$ en un vector, y los acomodamos como renglones de una matriz, **obtenemos una matriz cuadrada** $\mathbb{M}=P_{ij}\forall i,j\in\mathbb{S}$. A esta matriz la llamamos **matriz de transición de un paso**, ya que cuando la cadena deja el estado $i$, debe moverse a algún estado $j\in\mathbb{S}$
 
 Con lo comentado anteriormente, es fácil darnos cuenta de que hay una distribución para cada estado inicial a tiempo n, es decir, cada renglón debe sumar uno:
 
@@ -56,14 +60,15 @@ Con esto, estamos asumiendo que las probabilidades **no** dependen del tiempo, s
 # s el vector de estados
 Markov<-function(pi,m,s,n){
   #Número posible de estados
-  num_estados <- nrow(m) #o la longitud del vector s length(s)
+  num_estados <- nrow(m) #o la longitud del vector o bien: length(s)
   #Estados que va tomando
   estados <- numeric(n)
   #inicializamos la primera entrada
   estados[1] <-sample(s, 1, prob = pi)
   #Ahora usamos la matriz de transición
   for(t in 2:n) {
-    # Obtenemos el vector de probabilidades correspondiente a dicho estado en     el que caímos
+    # Obtenemos el vector de probabilidades correspondiente 
+    #a dicho estado en el que caímos
     p  <- m[estados[t-1], ]
     # una muestra al azar de los estados
     estados[t] <-  sample(s, 1, prob = p)
@@ -74,15 +79,26 @@ Markov<-function(pi,m,s,n){
 
 # Ejemplo:
 
-```{r}
+```{r Ejemplo}
 s<-c(1,2,3,4)
 pi<-c(1/4,1/4,1/4,1/4)
-p1<-c(1/4,1/4,0,1/2)
-p2<-c(1/4,1/4,0,1/2)
-p3<-c(1/4,1/4,0,1/2)
-p4<-c(1/4,1/4,0,1/2)
-m<-c(p1,p2,p3,p4)
-m<-matrix(m,nrow=4,ncol=4,byrow = T)
-Markov(pi,m,s,10)
+p1<-c(0,0,1/3,2/3)
+p2<-c(0,1/2,0,1/2)
+p3<-c(1/3,1/3,1,1/3)
+p4<-c(1/2,0,1/2,0)
+n=116
+m<-matrix(c(p1,p2,p3,p4),nrow=4,ncol=4,byrow = T);m
+simulaciones<-Markov(pi,m,s,n)
 ```
+
+# Visualizamos:
+
+```{r Visual}
+library(ggplot2)
+tiempo<-seq(from=0,to=(n-1),by=1)
+datos<-data.frame("Tiempo"=tiempo,"Estado"=simulaciones);datos
+#Podemos ver cómo va saltando
+ggplot(datos,aes(x=Tiempo,y=Estado))+geom_line()
+```
+
 
