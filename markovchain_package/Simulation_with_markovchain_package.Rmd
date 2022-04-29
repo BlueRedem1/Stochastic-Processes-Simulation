@@ -1,0 +1,235 @@
+---
+title: "markovchain_package_simulation"
+author: "Eduardo de Jesús Cuellar Chávez"
+date: "4/28/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# La paquetería `markovchain`
+
+El día de hoy trabajaremos con la paquetería `markovchain` de R. Esta paquetería tiene integradas ciertas funciones que nos permiten simular características de las cadenas de Markov. La documentación completa la podemos consultar [En este link](https://cran.r-project.org/web/packages/markovchain/markovchain.pdf)
+
+## Instalación y carga de la paquetería
+
+Lo primero será, evidentemente, instalar la paquetería:
+
+```{r}
+#Descomentar y correr
+#install.packages('markovchain')
+```
+
+Ahora, la cargamos:
+
+```{r}
+library(markovchain)
+```
+
+## Aprendiendo a usar la paquetería a través de un ejemplo.
+
+Para hacer más dinámico esto, planteemos un pequeño problema:
+
+Pensemos en un conductor (taxista, uber, repartidor, etc) en la ciudad, la cual dividiremos en 4 zonas: Norte, sur, este y oeste. El conductor, cada que inicia un nuevo viaje, puede quedarse en su misma zona o ir a una distinta, dependiendo de cuál sea el destino al que debe de llegar, evidentemente. 
+
+¿Por qué es bueno pensar esto como una cadena de Markov? Porque la ubicación del taxista al tiempo siguiente dependerá únicamente de dónde se encuentre en ese momento: Si un repartidor va de la zona norte a la zona sur, al llegar a la zona sur, el haber estado en la zona norte no le afecta en los pedidos que pueda llegar a recibir, por ejemplo, solo importará que se encuentra en la zona sur en ese momento.
+
+Ahora, supongamos que la dinámica de los viajes que realiza el conductor son los siguientes:
+
+* Un 30% de los viajes en la zona norte son dentro de la misma zona, un 30% son para el sur y un 40% para el oeste.
+
+* Un 40 % de los viajes en la zona sur son dentro de la misma zona, un 40% son hacia la zona norte y un 20% para la zona oeste 
+
+* Un 20% de los viajes en la zona oeste son dentro de la misma zona, un 50% son hacia la zona norte y un 30% hacia la zona sur.
+
+* Un 70% de los viajes en la zona este son dentro de la misma zona, 20% son hacia la zona oeste y 10% a la zona sur.
+
+### ¡Hagamos las matrices de transición!
+
+Primero, creemos vectores con la probabilidad de transición, estando en un estado, hacia otro (Es decir, los vectores de $\mathbb{P}(x,y)\forall x,y\in \mathbb{S}$)
+
+```{r}
+Zona_Norte = c(0.30, 0.30, 0.00, 0.40)
+Zona_Sur = c(0.40, 0.40, 0, 0.20)
+Zona_Este = c(0.00, 0.10, 0.70, 0.20)
+Zona_Oeste = c(0.50, 0.30, 0.00, 0.20)
+
+Probas_Zonas = c(Zona_Norte, Zona_Sur, Zona_Este, Zona_Oeste)
+```
+
+Creemos, también, un vector con los nombres de los espacios de estado:
+
+```{r}
+Zonas = c("Norte", "Sur", "Este", "Oeste")
+```
+
+Creamos la matriz de transición:
+
+```{r}
+Transicion_Zonas = matrix(data = Probas_Zonas,
+                          nrow = length(Zonas),
+                          ncol = length(Zonas),
+                          byrow = TRUE,
+                          dimnames =list(Zonas, Zonas))
+Transicion_Zonas
+```
+
+Ahora, creemos un objeto `markovchain`
+
+```{r}
+
+```
+
+
+```{r}
+MC_Zonas = new('markovchain', 
+               states = Zonas,
+               byrow = TRUE,
+               transitionMatrix = Transicion_Zonas,
+               name = "Rutas_Conductor")
+MC_Zonas
+```
+## Probas de n-pasos
+Calculemos la probabilidad de que un conductor de la zona norte, permanezca en dicha zona despues de dos y tres viajes
+
+Con las matrices normales, solo es:
+
+```{r}
+Transicion_Zonas %*% Transicion_Zonas
+Transicion_Zonas %*% Transicion_Zonas %*% Transicion_Zonas
+```
+
+En general:
+
+```{r}
+matriz_n_pasos <- function(transition_mtx, n){
+  res = transition_mtx
+  for (i in 1:(n-1)){
+    res = res %*% transition_mtx
+  }
+  return(res)
+}
+```
+
+```{r}
+matriz_n_pasos(Transicion_Zonas, 2)
+matriz_n_pasos(Transicion_Zonas, 3)
+```
+Con la paquetería, basta hacer lo siguiente:
+
+```{r}
+MC_Zonas^2
+MC_Zonas^3
+```
+
+## Clasificación de estados
+
+Podemos hacer un plot de la cadena también
+
+```{r}
+plot(MC_Zonas)
+```
+
+¿Cuáles son los estados absorbentes?
+
+```{r}
+recurrentStates(MC_Zonas)
+```
+
+¿Qué clases recurrentes hay?
+
+```{r}
+recurrentClasses(MC_Zonas)
+```
+
+¿Hay estados absorbentes?
+
+```{r}
+absorbingStates(MC_Zonas)
+```
+
+¿Cuáles son los estados transitorios?
+```{r}
+transientStates(MC_Zonas)
+```
+
+¿Cuáles son las clases de estados transitorios?
+```{r}
+transientClasses(MC_Zonas)
+```
+
+¿Cuáles son las clases que hay?
+```{r}
+communicatingClasses(MC_Zonas)
+```
+
+## Probas de absobsión
+
+Calculamos la probabilidad de que, estando en un estado transitorio, lleguemos a uno recurrente. Es una matriz de entradas (i,j) donde i (El renglón), son los estados transitorios, y j (Las columnas), son los estados recurrentes. nos devuelve la probabilidad de que el primer estado **no** transitorio al que pasemos, estando en i, sea el estado j, entrando así a la clase de comunicación a la que pertenece el estado j.
+
+```{r}
+absorptionProbabilities(MC_Zonas)
+```
+
+Calculamos el número esperado de pasos para ir de un estado transitorio a alguno recurrente. Nos devolverá un vector con el número esperado de pasos que necesita para llegar a un recurrente
+
+```{r}
+meanAbsorptionTime(MC_Zonas)
+```
+
+Calculamos también, dada una cadena irreducible, el número esperado de pasos que se necesitan para alcanzar otros estados. Como la que elegimos no es irreducible, tendríamos que usar otra
+
+```{r}
+#meanFirstPassageTime(MC_Zonas, "Norte")
+```
+
+Calculemos el número promedio de visitas. Nos devuelve una matriz con entradas (i,j), que representa el número promedio de visitas al estado j, si la cadena comienza en el estado i
+
+```{r}
+meanNumVisits(MC_Zonas)
+```
+
+Calculemos el tiempo esperado que tardamos en regresar a un estado recurrente:
+
+```{r}
+meanRecurrenceTime(MC_Zonas)
+```
+
+Calculemos la probabilidad de llegar por primera vez a un conjunto de estados A, antes que a un conjunto de estados B, comenzando desde diferentes estados:
+
+```{r}
+committorAB(MC_Zonas, c(4), c(2), p = c(3))
+```
+
+Recuperamos las probas de cada estado
+```{r}
+conditionalDistribution(MC_Zonas, "Norte")
+```
+
+Calculemos las probabilidades de que, comenzando en el estado i, lleguemos alguna vez al estado j
+
+```{r}
+hittingProbabilities(MC_Zonas)
+```
+
+Veamos si una cadena es irreducible
+
+```{r}
+is.irreducible(MC_Zonas)
+```
+
+Calculemos la probabilidad de que la primera visita al estado j, comenzando desde el estado que fijamos, sea en el paso i (Nos devuelve una matriz de dimensiones i,j)
+```{r}
+firstPassage(MC_Zonas, "Norte", 10)
+```
+Para un subconjunto de estados:
+
+```{r}
+firstPassageMultiple(MC_Zonas, "Norte", c("Norte", "Sur"), 10)
+```
+```{r}
+steadyStates(MC_Zonas)
+```
+
